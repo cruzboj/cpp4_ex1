@@ -51,20 +51,31 @@ void CacheMemory<K, V>::erase(const K &key)
     }
 }
 
-// template <typename K, typename V>
-// std::shared_ptr<V> CacheMemory<K, V>::get(const K &key)
-// {
-//     auto it = archive.find(key);
-//     if (it != archive.end()) // אם קיים במפת ה-shared_ptr
-//     {
-//         return it->second; // מחזיר את הערך שמאוחסן ב-shared_ptr
-//     }
-//     else // אם לא קיים במפה
-//     {
-//         // אפשר להחזיר nullptr אם לא נמצא הערך
-//         return nullptr;
-//     }
-// }
+template <typename K, typename V>
+std::shared_ptr<V> CacheMemory<K, V>::get(const K &key)
+{
+    // 1. אם הערך קיים ב-cache (weak_ptr):
+    auto it_cache = cache.find(key);
+    if (it_cache != cache.end())
+    {
+        if (auto ptr_shared = it_cache->second.lock()) {
+            return ptr_shared;  // מחזיר את ה-shared_ptr אם הוא עדיין חי
+        }
+    }
+
+    // 2. אם הערך לא קיים ב-cache, חפש ב-archive:
+    auto it_archive = archive.find(key);
+    if (it_archive != archive.end())
+    {
+        // שמור את ה-shared_ptr ב-cache כדי להשתמש בו בעתיד
+        auto ptr_shared = it_archive->second;
+        cache[key] = ptr_shared;  // הוסף ל-cache כ-weak_ptr
+        return ptr_shared;        // החזר את ה-shared_ptr
+    }
+
+    // 3. אם לא נמצא ב-cache וגם לא ב-archive, החזר nullptr
+    return nullptr;
+}
 
 template <typename K, typename V>
 std::vector<V> CacheMemory<K, V>::getCacheValues()
