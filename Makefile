@@ -1,4 +1,3 @@
-OBJS = cached_map.o
 
 run: prog
 	./prog
@@ -6,11 +5,11 @@ run: prog
 prog: main.o 
 	g++ *.o -o prog
 
-main.o: main.cpp cached_map.hpp #$(OBJS)
+main.o: main.cpp cached_map.hpp employee.o
 	g++ -c main.cpp
 
-# smartptr.o: smartptr.cpp
-# 	g++ -c smartptr.cpp
+employee.o: employee.cpp employee.hpp
+	g++ -c employee.cpp
 
 clean:
 	rm -f *.o prog
