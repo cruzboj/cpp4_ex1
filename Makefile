@@ -1,4 +1,4 @@
-OBJS = smartptr.o
+OBJS = cached_map.o
 
 run: prog
 	./prog
@@ -6,7 +6,7 @@ run: prog
 prog: main.o 
 	g++ *.o -o prog
 
-main.o: main.cpp smartptr.hpp #$(OBJS)
+main.o: main.cpp cached_map.hpp #$(OBJS)
 	g++ -c main.cpp
 
 # smartptr.o: smartptr.cpp

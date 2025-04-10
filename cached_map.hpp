@@ -1,5 +1,5 @@
-#ifndef SMARTPTR_HPP
-#define SMARTPTR_HPP
+#ifndef CACHED_MAP_HPP
+#define CACHED_MAP_HPP
 
 #include <iostream>
 #include <map>
