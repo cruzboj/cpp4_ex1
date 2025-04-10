@@ -4,6 +4,10 @@
 int main()
 {
     std::vector<Employee> employees = load("emps.bin");
+
+    //2th test
+    // std::vector<Employee> employees = load("newemps.bin");
+
     CacheMemory<int, Employee> memory;
     std::vector<Employee> successfulEmployees;
 
@@ -24,13 +28,17 @@ int main()
         val.print();
     }
 
-    // std::cout << "Employees data:" << std::endl;
-    // for (const auto& emp : employees) {
-    //     emp.print(); 
-    // }
-    
+    //test for newfile (newemps.bin)
+    std::cout << "Employees data:" << std::endl;
+    for (const auto& emp : employees) {
+        emp.print(); 
+    }
 
     save("newemps.bin", successfulEmployees);
 
+    for (const auto& val : memory.getCacheValues()) {
+        memory.erase(val.getId());  // מחיקת כל עובד מה-cache לפי ה-ID
+    }
+    
     return 0;
 }

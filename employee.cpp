@@ -27,10 +27,11 @@ void save(const std::string& filename, const std::vector<Employee>& employees) {
 
     for (const auto& emp : employees) {
         uint8_t id = emp.getId();
-        int salary = emp.getSalary();
-        int seniority = emp.getSeniority();
+        uint8_t salary = static_cast<uint8_t>(emp.getSalary());  // מתאם ל uint8_t
+        uint8_t seniority = static_cast<uint8_t>(emp.getSeniority());  // מתאם ל uint8_t
 
-        file.write(reinterpret_cast<char*>(&id), sizeof(id));
+        // כותב את הערכים לפורמט uint8_t
+        file.write(reinterpret_cast<const char*>(&id), sizeof(id));
         file.write(reinterpret_cast<const char*>(&salary), sizeof(salary));
         file.write(reinterpret_cast<const char*>(&seniority), sizeof(seniority));
     }
